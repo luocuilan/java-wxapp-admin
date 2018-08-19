@@ -49,13 +49,13 @@ public class Filecontroller {
 	 */
 	@ResponseBody
 	@RequestMapping("/upload")
-	public AjaxResult upload(@RequestParam("file") MultipartFile[] files, String dataKey){
-		List<Attachment> returnList = new ArrayList<Attachment>();
+	public AjaxResult upload(@RequestParam("file") MultipartFile[] files){
+		List<AjaxResult> returnList = new ArrayList<AjaxResult>();
 		try {
 			for (MultipartFile file : files) {
 				Attachment attachment = attachmentService.uploadFile(file);
-				attachmentService.saveAttachment(attachment, dataKey);
-				returnList.add(attachment);
+				AjaxResult result = attachmentService.saveAttachment(attachment);
+				returnList.add(result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

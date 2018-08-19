@@ -1,10 +1,13 @@
 package com.xm.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -15,8 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.xm.mapper.AttachmentMapper;
 import com.xm.model.Attachment;
+import com.xm.model.AttachmentExample;
+import com.xm.model.AttachmentExample.Criteria;
 import com.xm.model.PurSysUser;
 import com.xm.shiro.constant.Constants;
+import com.xm.shiro.util.AjaxResult;
 import com.xm.shiro.util.DateUtil;
 import com.xm.shiro.util.EnvironmentUtil;
 import com.xm.shiro.util.FileTypeUtils;
@@ -26,6 +32,7 @@ import com.xm.shiro.util.UserContext;
 public class AttachmentService {
 
 	private Logger logger = LoggerFactory.getLogger(AttachmentService.class);
+	private static final String RESOURCE_SERVER_ROOTPATH = EnvironmentUtil.getInstance().getPropertyValue("resource.server.rootPath");
 	private static final String RESOURCE_SERVER_ADDRESS = EnvironmentUtil.getInstance().getPropertyValue("resource.server.address");
 	
 	@Autowired
@@ -73,7 +80,32 @@ public class AttachmentService {
 			return null;
 		}
 	}
-		
+	/**
+	 * 根据附件ID  copy 
+	 * @throws IOException 
+	 * */
+	public AjaxResult copyFile(String partialPath) throws IOException{
+		AttachmentExample achmentExample = new AttachmentExample();
+		Criteria achmentC = achmentExample.createCriteria();
+		achmentC.andPartialPathEqualTo(partialPath);
+		Attachment file = attachmentMapper.selectByExample(achmentExample).get(0);
+		String filePath = RESOURCE_SERVER_ADDRESS + file.getPartialPath();
+		AjaxResult result = new AjaxResult();
+		result.put("fileId", file.getAttachmentId());
+		FileInputStream ins = new FileInputStream(filePath);
+        FileOutputStream out = new FileOutputStream("/opt/soft/apache-tomcat80/webapps/img/tmpPic/"+file.getFileName());
+        String imgUrl = RESOURCE_SERVER_ROOTPATH + "img/tmpPic/"+file.getFileName();
+        result.put("imgurl", imgUrl);
+        byte[] b = new byte[1024];
+        int n=0;
+        while((n=ins.read(b))!=-1){
+            out.write(b, 0, n);
+        }
+        
+        ins.close();
+        out.close();
+        return result;
+	}	
 	/**
 	 * 获取资源服务器上的目标路径
 	 * @param serverDir
@@ -124,17 +156,26 @@ public class AttachmentService {
 	 * 保存附件内容
 	 * @param bsAttachment
 	 * @param dataKey
+	 * @throws IOException 
 	 */
-	public void saveAttachment(Attachment attachment, String dataKey) {
+	public AjaxResult saveAttachment(Attachment attachment) throws IOException {
+		String guid = UUID.randomUUID().toString().replaceAll("-", "");
 		PurSysUser user = UserContext.getCurUser();
 		if (attachment == null) {
-			return;
+			return AjaxResult.errorResult("文件为空");
 		}
-		attachment.setDataKey(dataKey);
+		attachment.setDataKey(guid);
 		attachment.setType(10);// TODO
 		attachment.setUploadTime(new Date());
-		attachment.setUploaderId(user.getUserid());
-		attachment.setUploaderName(user.getUsername());
-		this.attachmentMapper.insert(attachment);
+		if(user != null) {
+			attachment.setUploaderId(user.getUserid());
+			attachment.setUploaderName(user.getUsername());
+		}else {
+			attachment.setUploaderId(1);
+			attachment.setUploaderName("admin");
+		}
+		attachmentMapper.insertSelective(attachment);
+		//返回路径和文件Id
+		return copyFile(attachment.getPartialPath());
 	}
 }

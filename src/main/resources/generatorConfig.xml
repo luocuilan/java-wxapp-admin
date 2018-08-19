@@ -31,14 +31,14 @@
         	<property name="enableSubPackages" value="ture"/>
         </javaClientGenerator>
 
-        <table tableName="pur_sys_user"/> 
-        <!-- <table tableName="attachment"/> -->
-       <!--  <table tableName="lo_shop_cart"/>
+        <table tableName="lo_turn_play"/>
         <table tableName="lo_goods"/>  
+        <!-- <table tableName="pur_sys_user"/>  -->
+        <!-- <table tableName="attachment"/> -->
+        <!--  <table tableName="lo_shop_cart"/>
         <table tableName="sys_database"/> -->     
         <!-- <table tableName="lo_order"/>
         <table tableName="lo_order_detail"/>
-        <table tableName="lo_turn_play"/>
         <table tableName="pur_sys_roleMenu"/>
         <table tableName="pur_sys_menu"/>    
         <table tableName="pur_sys_role"/>

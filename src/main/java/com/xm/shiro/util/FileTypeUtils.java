@@ -10,7 +10,7 @@ public class FileTypeUtils {
 	/**
 	 * 图片格式
 	 */
-	public static String IMAGE_TYPE = "bmp,jpg,tiff,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw";
+	public static String IMAGE_TYPE = "bmp,jpg,tiff,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw,png";
 	/**
 	 * 视频格式
 	 */
