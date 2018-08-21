@@ -128,7 +128,7 @@ public class Filecontroller {
 	}
 	/**
 	 * 删除附件
-	 * @param attachmentid
+	 * @param fileId
 	 * @return
 	 */
 	@RequestMapping("deleteFilesById")
