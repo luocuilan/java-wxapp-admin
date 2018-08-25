@@ -39,7 +39,7 @@ public class ShiroRealm extends AuthorizingRealm {
 	/**
 	 * 登录认证
 	 *
-	 * @param authenticationToken
+	 * @param principals
 	 * @return
 	 * @throws AuthenticationException
 	 */

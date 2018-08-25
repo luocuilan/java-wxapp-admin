@@ -194,8 +194,8 @@ public class DateUtil {
 	 * 
 	 * 计算2个时间之间的相差的小时数(Date,Date)
 	 * date1<date2
-	 * @param Date date1
-	 * @param Date date2
+	 * @param date1
+	 * @param date2
 	 * @return
 	 */
 	public static int getDifferHour(Date date1, Date date2) {		
@@ -204,15 +204,13 @@ public class DateUtil {
 		int hours = (int) ((d2 - d1) / millionSecondsOfHour);
 		return hours;
 	}
-	
-	/**
-	 * 
-	 * 计算2个时间之间的相差的小时(String,String)
-	 * date1<date2
-	 * @param String date1
-	 * @param String date2
-	 * @return
-	 */
+
+    /**
+     * 计算2个时间之间的相差的小时(String,String)
+     * @param date1
+     * @param date2
+     * @return
+     */
 	public static int getDifferHour(String date1, String date2) {
 		Date dateTime1_tmp = DateUtil.parse(date1, "yyyy-MM-dd HH:mm");
 		Date dateTime2_tmp = DateUtil.parse(date2, "yyyy-MM-dd HH:mm");		
@@ -226,7 +224,7 @@ public class DateUtil {
 	 * 计算日期加年
 	 * 
 	 * @param date
-	 * @param months
+	 * @param years
 	 * @return
 	 */
 	public static Date addYear(Date date , int years){
@@ -294,7 +292,6 @@ public class DateUtil {
 	 * 格式化日期为String型(yyyy-MM-dd)
 	 * 
 	 * @param date
-	 * @param formater
 	 * @return
 	 */
 	public static String format(Date date){
@@ -317,7 +314,6 @@ public class DateUtil {
 	 * 格式化日期为Date型(yyyy-MM-dd)
 	 * 
 	 * @param date
-	 * @param formater
 	 * @return
 	 */
 	public static Date parse(String date){
@@ -602,7 +598,6 @@ public class DateUtil {
 	
 	/**
 	 * 生产日期流水号
-	 * @param args
 	 */
 	public static String getSerialNo() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");

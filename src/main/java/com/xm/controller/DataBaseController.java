@@ -33,7 +33,7 @@ public class DataBaseController {
 	}
 	/**
 	 * 新增参数类型
-	 * @param dataType 参数类型
+	 * @param dataBase 参数类型
 	 * @return
 	 */
 	@RequestMapping(value = "saveDatabase", method = RequestMethod.POST)
@@ -43,7 +43,7 @@ public class DataBaseController {
 	}
 	/**
 	 * 删除参数类型
-	 * @param dataType 参数类型
+	 * @param baseId 参数类型
 	 * @return
 	 */
 	@RequestMapping(value = "delDatabase", method = RequestMethod.POST)

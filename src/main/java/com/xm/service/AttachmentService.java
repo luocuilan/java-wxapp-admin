@@ -37,7 +37,7 @@ public class AttachmentService {
 	
 	@Autowired
 	private AttachmentMapper attachmentMapper;
-	
+
 	/**
 	 * 上传附件并保存
 	 * @param file
@@ -154,9 +154,8 @@ public class AttachmentService {
 	}
 	/**
 	 * 保存附件内容
-	 * @param bsAttachment
-	 * @param dataKey
-	 * @throws IOException 
+	 * @param attachment
+	 * @throws IOException
 	 */
 	public AjaxResult saveAttachment(Attachment attachment) throws IOException {
 		String guid = UUID.randomUUID().toString().replaceAll("-", "");
