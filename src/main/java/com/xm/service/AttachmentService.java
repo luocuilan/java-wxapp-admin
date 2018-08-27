@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import com.xm.mapper.PurSysUserMapper;
+import com.xm.model.PurSysUserExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,14 @@ import com.xm.shiro.util.UserContext;
 @Service
 public class AttachmentService {
 
-	private Logger logger = LoggerFactory.getLogger(AttachmentService.class);
-	private static final String RESOURCE_SERVER_ROOTPATH = EnvironmentUtil.getInstance().getPropertyValue("resource.server.rootPath");
-	private static final String RESOURCE_SERVER_ADDRESS = EnvironmentUtil.getInstance().getPropertyValue("resource.server.address");
-	
-	@Autowired
-	private AttachmentMapper attachmentMapper;
+    private Logger logger = LoggerFactory.getLogger(AttachmentService.class);
+    private static final String RESOURCE_SERVER_ROOTPATH = EnvironmentUtil.getInstance().getPropertyValue("resource.server.rootPath");
+    private static final String RESOURCE_SERVER_ADDRESS = EnvironmentUtil.getInstance().getPropertyValue("resource.server.address");
+
+    @Autowired
+    private AttachmentMapper attachmentMapper;
+    @Autowired
+    private PurSysUserMapper sysUserMapper;
 
 	/**
 	 * 上传附件并保存
@@ -159,7 +163,10 @@ public class AttachmentService {
 	 */
 	public AjaxResult saveAttachment(Attachment attachment) throws IOException {
 		String guid = UUID.randomUUID().toString().replaceAll("-", "");
-		PurSysUser user = UserContext.getCurUser();
+		Integer userId = UserContext.getCurUserId();
+        PurSysUserExample userExample = new PurSysUserExample();
+        userExample.createCriteria().andUseridEqualTo(userId);
+        PurSysUser user = sysUserMapper.selectByExample(userExample).get(0);
 		if (attachment == null) {
 			return AjaxResult.errorResult("文件为空");
 		}

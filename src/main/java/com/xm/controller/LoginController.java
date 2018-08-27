@@ -1,8 +1,14 @@
 package com.xm.controller;
 
+import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.xm.mapper.PurSysUserMapper;
+import com.xm.model.PurSysUserExample;
+import com.xm.shiro.util.AjaxResult;
+import com.xm.shiro.util.UserContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -12,7 +18,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,30 +31,19 @@ public class LoginController {
 
 	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+	@Autowired
+    private PurSysUserMapper userMapper;
+
   //跳转到登录表单页面
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "login";
-    }
-    
-    
-    @RequestMapping("/")
-    public String index(Model model) {
-        System.out.println("this is frame");
-        return "common/frame";
+    @RequestMapping(value = "loginTest", method = RequestMethod.GET)
+    public AjaxResult login() {
+        return AjaxResult.unloginResult("没有登录");
     }
 
-
-    @RequestMapping("/index")
-    public String list(Model model) {
-        System.out.println("this is index");
-        return "index";
-    }
-    
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-    @RequestMapping(value = "/ajaxLogin", method = RequestMethod.GET)
+//     @RequestMapping(value = "login", method = RequestMethod.GET)
     public String index(PurSysUser user) {
-        if (user.getUserid() != null && user.getPwd() != null) {
+        if (user.getLogin() != null && user.getPwd() != null) {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getLogin(), user.getPwd(), "login");
             Subject currentUser = SecurityUtils.getSubject();
             logger.info("对用户[" + user.getUserid() + "]进行登录验证..验证开始");
@@ -74,31 +69,57 @@ public class LoginController {
                 logger.error(ae.getMessage());
             }
         }
-        return "login";
+        return "";
     }
     
     
     /**
      * ajax登录请求接口方式登陆
-     * @param username
+     * @param loginId
      * @param password
      * @return
      */
-    @RequestMapping(value="/ajaxLogin",method=RequestMethod.POST)
+    @RequestMapping(value="login",method=RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> submitLogin(String username, String password) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    public AjaxResult submitLogin(String loginId, String password) {
+        PurSysUser user = new PurSysUser();
         try {
-
-        	UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+//            Base64 base = new Base64();
+            user.setLogin(loginId);
+            user.setPwd(password);
+        	UsernamePasswordToken token = new UsernamePasswordToken(loginId, password);
             SecurityUtils.getSubject().login(token);
-            resultMap.put("status", 200);
-            resultMap.put("message", "登录成功");
-
+            PurSysUserExample UserExample = new PurSysUserExample();
+            UserExample.createCriteria().andLoginEqualTo(loginId);
+            user = userMapper.selectByExample(UserExample).get(0);
+            UserContext.setCurUserId(user.getId().toString());
+            UserContext.setToken(token);
+            return AjaxResult.successResult("登入成功");
+        }  catch ( UnknownAccountException uae ) {
+            return AjaxResult.unloginResult("登入失败,用户名不存在");
+        } catch ( IncorrectCredentialsException ice ) {
+            return AjaxResult.unloginResult("登入失败,密码错误");
+        } catch ( LockedAccountException lae ) {
+            return AjaxResult.unloginResult("登入失败,用户已锁");
         } catch (Exception e) {
-            resultMap.put("status", 500);
-            resultMap.put("message", e.getMessage());
+            e.printStackTrace();
+            return AjaxResult.unloginResult(e.getMessage());
         }
-        return resultMap;
+    }
+
+    /**
+     * 登出
+     * @return
+     */
+    @RequestMapping(value = "loginOut",method=RequestMethod.GET)
+    @ResponseBody
+    public AjaxResult loginOut() {
+        try {
+            SecurityUtils.getSubject().logout();
+            return AjaxResult.successResult();
+        }catch (Exception e){
+            e.printStackTrace();
+            return AjaxResult.errorResult(e.getMessage());
+        }
     }
 }

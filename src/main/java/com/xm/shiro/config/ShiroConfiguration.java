@@ -70,14 +70,14 @@ public class ShiroConfiguration {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Map<String, String> filterChainDefinitionManager = new HashMap<String, String>();
         filterChainDefinitionManager.put("/logout", "logout");
-        filterChainDefinitionManager.put("/user/**", "authc,roles[user]");
-        filterChainDefinitionManager.put("/shop/**", "authc,roles[shop]");
-        filterChainDefinitionManager.put("/admin/**", "authc,roles[admin]");
         filterChainDefinitionManager.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/ajaxLogin", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/statistic/**",  "anon");//静态资源不拦截
-        filterChainDefinitionManager.put("/**",  "anon");//测试方便
+//        filterChainDefinitionManager.put("/**",  "anon");//测试方便
 //        filterChainDefinitionManager.put("/**",  "authc,roles[user]");//其他资源全部拦截
+        //你配置成没有权限的话重定向到a页面，而你把a页面配置为需要具有某个角色权限(就是改成了roles)，
+        // 而你此时登录的用户没有此权限，然后又重定向到a页面，自然就会死循环
+        filterChainDefinitionManager.put("/**",  "authc");//其他资源全部拦截
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
 
         shiroFilterFactoryBean.setLoginUrl("/login");

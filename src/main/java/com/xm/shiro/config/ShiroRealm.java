@@ -72,7 +72,7 @@ public class ShiroRealm extends AuthorizingRealm {
 		String userName = (String)authcToken.getPrincipal();
 		PurSysUser user = userService.getUserByUserCode(userName);
 		if(user != null) {
-			return new SimpleAuthenticationInfo(user.getUserid(), user.getPwd(), getName());
+			return new SimpleAuthenticationInfo(user.getLogin(), user.getPwd(), getName());
 		} else {
 			return null;
 		}

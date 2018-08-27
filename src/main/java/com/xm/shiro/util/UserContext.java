@@ -1,6 +1,7 @@
 package com.xm.shiro.util;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 import com.xm.model.PurSysUser;
@@ -10,22 +11,7 @@ import com.xm.model.PurSysUser;
  * 功能说明：获取当前登录的用户信息
  */
 public class UserContext {
-    
-    /**
-     * 获取当前系统用户信息
-     * @return
-     */
-    public static PurSysUser getCurUser(){
-        try{
-            Subject subject = SecurityUtils.getSubject();
-            subject.getSession().getAttribute("curUser");
-            PurSysUser user = (PurSysUser) subject.getPrincipal();
-            return user;
-        }catch(Exception e){
-            return null;
-        }
-    }
-    
+
     /**
      * 获取当前系统用户Id
      * @return
@@ -49,12 +35,29 @@ public class UserContext {
         Subject subject = SecurityUtils.getSubject();
         subject.getSession().setAttribute("curUserId", curUserId);
     }
+
     /**
-     * 设置当前用户name
-     * @param curUserName
+     * 设置当前token
+     * @param token
      */
-    public static void setCurUserName(String curUserName) {
+    public static void setToken(UsernamePasswordToken token){
         Subject subject = SecurityUtils.getSubject();
-        subject.getSession().setAttribute("curUserName", curUserName);
+        subject.getSession().setAttribute("currentToken", token);
+    }
+
+    /**
+     * 获取当前token
+     * @return
+     */
+    public static UsernamePasswordToken getToken(){
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.getSession().getAttribute("currentToken");
+            UsernamePasswordToken token = (UsernamePasswordToken)subject.getPrincipal();
+            return token;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }
