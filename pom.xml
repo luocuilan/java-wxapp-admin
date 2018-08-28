@@ -104,7 +104,6 @@
 		</dependency>
     </dependencies>
     <build>
-  	<pluginManagement>
     	<plugins>
     		<!-- 用Maven工具生成Mybatis的代码及映射的文件 -->
 			<!-- BEGIN -->
@@ -119,43 +118,40 @@
     		</plugin>
 			<!-- END -->
 			<!-- Ignore/Execute plugin execution -->
-			<plugin>
-				<groupId>org.eclipse.m2e</groupId>
-				<artifactId>lifecycle-mapping</artifactId>
-				<version>1.0.0</version>
-				<configuration>
-					<lifecycleMappingMetadata>
-						<pluginExecutions>
-							<pluginExecution>
-								<pluginExecutionFilter>
-									<groupId>org.apache.maven.plugins</groupId>
-									<artifactId>maven-dependency-plugin</artifactId>
-									<versionRange>[1.0.0,)</versionRange>
-									<goals>
-										<goal>copy-dependencies</goal>
-										<goal>unpack</goal>
-									</goals>
-								</pluginExecutionFilter>
-								<action>
-									<ignore />
-								</action>
-							</pluginExecution>
-						</pluginExecutions>
-					</lifecycleMappingMetadata>
-				</configuration>
-			</plugin>
-    	</plugins>
-    </pluginManagement>
-  	<plugins>
-  		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-compiler-plugin</artifactId>
-			<version>3.1</version>
-			<configuration>
-				<source>1.8</source>
-				<target>1.8</target>
-			</configuration>
-		</plugin>
-  	</plugins>
-  </build>
+			<!--<plugin>-->
+				<!--<groupId>org.eclipse.m2e</groupId>-->
+				<!--<artifactId>lifecycle-mapping</artifactId>-->
+				<!--<version>1.0.0</version>-->
+				<!--<configuration>-->
+					<!--<lifecycleMappingMetadata>-->
+						<!--<pluginExecutions>-->
+							<!--<pluginExecution>-->
+								<!--<pluginExecutionFilter>-->
+									<!--<groupId>org.apache.maven.plugins</groupId>-->
+									<!--<artifactId>maven-dependency-plugin</artifactId>-->
+									<!--<versionRange>[1.0.0,)</versionRange>-->
+									<!--<goals>-->
+										<!--<goal>copy-dependencies</goal>-->
+										<!--<goal>unpack</goal>-->
+									<!--</goals>-->
+								<!--</pluginExecutionFilter>-->
+								<!--<action>-->
+									<!--<ignore />-->
+								<!--</action>-->
+							<!--</pluginExecution>-->
+						<!--</pluginExecutions>-->
+					<!--</lifecycleMappingMetadata>-->
+				<!--</configuration>-->
+			<!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+      </build>
 </project>

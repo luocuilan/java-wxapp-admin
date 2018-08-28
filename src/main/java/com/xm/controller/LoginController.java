@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.xm.mapper.PurSysUserMapper;
 import com.xm.model.PurSysUserExample;
 import com.xm.shiro.util.AjaxResult;
+import com.xm.shiro.util.MD5Util;
 import com.xm.shiro.util.UserContext;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -41,10 +42,10 @@ public class LoginController {
     }
 
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-//     @RequestMapping(value = "login", method = RequestMethod.GET)
+    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String index(PurSysUser user) {
         if (user.getLogin() != null && user.getPwd() != null) {
-            UsernamePasswordToken token = new UsernamePasswordToken(user.getLogin(), user.getPwd(), "login");
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getLogin(), MD5Util.string2MD5(user.getPwd()));
             Subject currentUser = SecurityUtils.getSubject();
             logger.info("对用户[" + user.getUserid() + "]进行登录验证..验证开始");
             try {
@@ -79,8 +80,8 @@ public class LoginController {
      * @param password
      * @return
      */
-    @RequestMapping(value="login",method=RequestMethod.POST)
-    @ResponseBody
+//    @RequestMapping(value="login",method=RequestMethod.POST)
+//    @ResponseBody
     public AjaxResult submitLogin(String loginId, String password) {
         PurSysUser user = new PurSysUser();
         try {
@@ -111,9 +112,9 @@ public class LoginController {
      * 登出
      * @return
      */
-    @RequestMapping(value = "loginOut",method=RequestMethod.GET)
+    @RequestMapping(value = "logout")
     @ResponseBody
-    public AjaxResult loginOut() {
+    public AjaxResult logout() {
         try {
             SecurityUtils.getSubject().logout();
             return AjaxResult.successResult();

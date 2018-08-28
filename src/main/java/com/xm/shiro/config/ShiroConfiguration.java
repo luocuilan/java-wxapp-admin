@@ -69,7 +69,6 @@ public class ShiroConfiguration {
 
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         Map<String, String> filterChainDefinitionManager = new HashMap<String, String>();
-        filterChainDefinitionManager.put("/logout", "logout");
         filterChainDefinitionManager.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/ajaxLogin", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/statistic/**",  "anon");//静态资源不拦截

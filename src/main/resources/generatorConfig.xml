@@ -16,27 +16,32 @@
         				userId="root" password="123456">
         </jdbcConnection>
         <!--生成的model 包路径 -->
-        <javaModelGenerator targetPackage="com.xm.model" targetProject="G:\workspace\springboot-shiro\src\main\java">
+        <javaModelGenerator targetPackage="com.xm.model" targetProject="G:\our-app\java-wxapp-admin\src\main\java">
         	 <property name="enableSubPackages" value="ture"/>
         	 <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!--生成xml mapper文件 路径 -->
-        <sqlMapGenerator targetPackage="com.xm.mapper" targetProject="G:\workspace\springboot-shiro\src\main\java">
+        <sqlMapGenerator targetPackage="mapper" targetProject="G:\our-app\java-wxapp-admin\src\main\resources">
         	<property name="enableSubPackages" value="ture"/>
         </sqlMapGenerator>
 
         <!-- 生成的mapper接口 的包路径 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.xm.mapper" targetProject="G:\workspace\springboot-shiro\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.xm.mapper" targetProject="G:\our-app\java-wxapp-admin\src\main\java">
         	<property name="enableSubPackages" value="ture"/>
         </javaClientGenerator>
 
-        <table tableName="lo_turn_play"/>
-        <table tableName="lo_goods"/>  
-        <!-- <table tableName="pur_sys_user"/>  -->
+        <table tableName="sys_permission"/>
+        <table tableName="sys_role"/>
+        <table tableName="sys_role_permission"/>
+        <table tableName="sys_user_role"/>
+        <table tableName="sys_user"/>
+        <!--<table tableName="lo_turn_play"/>-->
+        <!--<table tableName="lo_goods"/>-->
+        <!--<table tableName="pur_sys_user"/>-->
         <!-- <table tableName="attachment"/> -->
         <!--  <table tableName="lo_shop_cart"/>
-        <table tableName="sys_database"/> -->     
+        <table tableName="sys_database"/> -->
         <!-- <table tableName="lo_order"/>
         <table tableName="lo_order_detail"/>
         <table tableName="pur_sys_roleMenu"/>

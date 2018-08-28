@@ -26,7 +26,6 @@ import com.xm.service.user.UserService;
 
 /**
  * 获取用户的角色和权限信息
- * Created by bamboo on 2017/5/10.
  */
 public class ShiroRealm extends AuthorizingRealm {
 
