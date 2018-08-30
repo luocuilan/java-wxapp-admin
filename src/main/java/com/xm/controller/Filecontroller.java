@@ -30,7 +30,7 @@ import com.xm.shiro.util.AjaxResult;
 import com.xm.shiro.util.EnvironmentUtil;
 
 @RestController
-@RequestMapping("file")
+@RequestMapping("/api/file")
 public class Filecontroller {
 
 	private static Logger logger = LoggerFactory.getLogger(Filecontroller.class);

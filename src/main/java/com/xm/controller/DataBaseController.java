@@ -12,11 +12,11 @@ import com.xm.service.sys.DataBaseService;
 import com.xm.shiro.util.AjaxResult;
 
 @RestController
+@RequestMapping("/api")
 public class DataBaseController {
 	
 	private static Logger logger = LoggerFactory.getLogger(DataBaseController.class);
-	
-	
+
 	@Autowired
 	private DataBaseService databaseService;
 

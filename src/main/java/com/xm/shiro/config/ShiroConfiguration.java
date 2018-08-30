@@ -76,10 +76,10 @@ public class ShiroConfiguration {
 //        filterChainDefinitionManager.put("/**",  "authc,roles[user]");//其他资源全部拦截
         //你配置成没有权限的话重定向到a页面，而你把a页面配置为需要具有某个角色权限(就是改成了roles)，
         // 而你此时登录的用户没有此权限，然后又重定向到a页面，自然就会死循环
-        filterChainDefinitionManager.put("/**",  "authc");//其他资源全部拦截
+        filterChainDefinitionManager.put("/**",  "anon");//其他资源全部拦截
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
 
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/loginTest");
         shiroFilterFactoryBean.setSuccessUrl("/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
@@ -100,11 +100,5 @@ public class ShiroConfiguration {
         aasa.setSecurityManager(securityManager);
         return aasa;
     }
-
-    //thymeleaf模板引擎和shiro整合时使用
-//    @Bean(name = "shiroDialect")
-//    public ShiroDialect shiroDialect(){
-//        return new ShiroDialect();
-//    }
 
 }

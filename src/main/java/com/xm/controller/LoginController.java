@@ -1,10 +1,5 @@
 package com.xm.controller;
 
-import java.util.Base64;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
 import com.xm.mapper.PurSysUserMapper;
 import com.xm.model.PurSysUserExample;
 import com.xm.shiro.util.AjaxResult;
@@ -28,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xm.model.PurSysUser;
 
 @RestController
+@RequestMapping("/api")
 public class LoginController {
 
 	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -42,7 +38,7 @@ public class LoginController {
     }
 
     //登陆验证，这里方便url测试，正式上线需要使用POST方式提交
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+//    @RequestMapping(value = "login", method = RequestMethod.GET)
     public String index(PurSysUser user) {
         if (user.getLogin() != null && user.getPwd() != null) {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getLogin(), MD5Util.string2MD5(user.getPwd()));
@@ -80,15 +76,15 @@ public class LoginController {
      * @param password
      * @return
      */
-//    @RequestMapping(value="login",method=RequestMethod.POST)
-//    @ResponseBody
+    @RequestMapping(value="login",method=RequestMethod.POST)
+    @ResponseBody
     public AjaxResult submitLogin(String loginId, String password) {
         PurSysUser user = new PurSysUser();
         try {
 //            Base64 base = new Base64();
             user.setLogin(loginId);
             user.setPwd(password);
-        	UsernamePasswordToken token = new UsernamePasswordToken(loginId, password);
+        	UsernamePasswordToken token = new UsernamePasswordToken(loginId, MD5Util.string2MD5(password));
             SecurityUtils.getSubject().login(token);
             PurSysUserExample UserExample = new PurSysUserExample();
             UserExample.createCriteria().andLoginEqualTo(loginId);
